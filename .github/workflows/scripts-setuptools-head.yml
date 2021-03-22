@@ -3,6 +3,7 @@ name: Script generation with setuptools head
 on:
   schedule:
     - cron:  '0 0,12 * * *'
+  push:
 
 jobs:
   build:
@@ -20,16 +21,17 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Setup buildout virtualenv
+    - name: Setup virtualenv
       run: |
-        make -f .github/workflows/Makefile sandbox/bin/buildout
+        make -f .github/workflows/Makefile sandbox/bin/python
     - name: Use setuptools develop
       env:
         PYTHON_VERSION: ${{matrix.python-version}}
       run: |
-        ./sandbox/bin/pip uninstall -y setuptools
         ./sandbox/bin/pip install -e "git+https://github.com/pypa/setuptools.git#egg=setuptools"
-        ls ../sandbox/lib/python${PYTHON_VERSION}/site-packages
+    - name: Install buildout in sandbox
+      run: |
+        make -f .github/workflows/Makefile sandbox/bin/buildout
     - name: Run buildout
       env:
         PACKAGE: ${{matrix.package}}
