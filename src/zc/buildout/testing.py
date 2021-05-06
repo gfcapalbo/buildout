@@ -315,11 +315,14 @@ def buildoutSetUp(test):
 
         # Now we must modify the newly created bin/buildout to
         # actually begin coverage.
+        import pkg_resources
+        coverage_dir = pkg_resources.get_distribution('coverage').module_path
+
         with open('bin/buildout') as f:
             import textwrap
             lines = f.read().splitlines()
             assert lines[1] == '', lines
-            lines[1] = 'import coverage; coverage.process_startup()'
+            lines[1] = 'import sys; sys.path[0:0] = [%r]; import coverage; coverage.process_startup()' % coverage_dir
 
         with open('bin/buildout', 'w') as f:
             f.write('\n'.join(lines))
