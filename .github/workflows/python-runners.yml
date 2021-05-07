@@ -12,7 +12,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
         exclude:
-          # excludes node 8 on macOS
+          # excludes 2.7 on windows as choclatey does not support it anymore
           - os: windows-latest
             python-version: 2.7
 
