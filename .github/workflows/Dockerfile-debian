@@ -17,6 +17,6 @@ COPY src /home/buildout/sandbox/src
 COPY zc.recipe.egg_ /home/buildout/sandbox/zc.recipe.egg_
 COPY setup.* dev.py *.rst *.txt buildout.cfg .coveragerc /home/buildout/sandbox/
 USER root
-RUN chown -R buildout:buildout *
+RUN chown -R buildout:buildout /home/buildout/sandbox
 USER buildout
 RUN make PYTHON_VER=${PYTHON_VER} build
