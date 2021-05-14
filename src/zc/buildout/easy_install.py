@@ -1506,7 +1506,12 @@ if len(sys.argv) > 1:
 
 if _interactive:
     del _interactive
-    __import__("code").interact(banner="", local=globals())
+    try:
+        import IPython
+    except ImportError:
+        __import__("code").interact(banner="", local=globals())
+    else:
+        IPython.start_ipython(user_ns=globals())
 ''' % universal_newline_option
 
 runsetup_template = """
